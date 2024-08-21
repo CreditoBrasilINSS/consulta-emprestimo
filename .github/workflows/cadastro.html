@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Painel de Controle</h1>
+
+        <button onclick="logout()">Logout</button>
+
+        <!-- Seção de Pesquisa de Usuários (Somente Admin) -->
+        <section id="pesquisaSection">
+            <h2>Pesquisar Usuário</h2>
+            <div class="input-group">
+                <input type="text" id="pesquisaUsuario" placeholder="Digite o nome ou usuário">
+                <button onclick="pesquisarUsuario()">Pesquisar</button>
+            </div>
+            <div id="resultadoPesquisa">
+                <!-- Resultado da pesquisa será exibido aqui -->
+            </div>
+        </section>
+
+        <!-- Seção de Cadastro de Novo Usuário (Somente Admin) -->
+        <section id="cadastroSection">
+            <h2>Adicionar Novo Usuário</h2>
+            <form id="cadastroUsuarioForm" onsubmit="return adicionarUsuario()">
+                <div class="input-group">
+                    <input type="text" id="novoUsuario" placeholder="Nome de Usuário" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="novaSenha" placeholder="Senha" required>
+                </div>
+                <button type="submit">Cadastrar</button>
+                <div id="cadastroResultado" style="margin-top: 20px;"></div>
+            </form>
+        </section>
+
+    </div>
+    <script>
+        async function carregarUsuarios() {
+            const response = await fetch('usuarios.json');
+            const usuarios = await response.json();
+            return usuarios;
+        }
+
+        function logout() {
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'index.html';
+        }
+
+        async function pesquisarUsuario() {
+            const termoPesquisa = document.getElementById('pesquisaUsuario').value.toLowerCase();
+            const usuarios = await carregarUsuarios();
+
+            const resultados = usuarios.filter(user => 
+                user.username.toLowerCase().includes(termoPesquisa)
+            );
+
+            if (resultados.length > 0) {
+                const listaResultados = resultados.map(user => `
+                    <p>Usuário: ${user.username}</p>
+                `).join('');
+                document.getElementById('resultadoPesquisa').innerHTML = listaResultados;
+            } else {
+                document.getElementById('resultadoPesquisa').innerHTML = `<p>Nenhum usuário encontrado.</p>`;
+            }
+        }
+
+        async function adicionarUsuario() {
+            const username = document.getElementById('novoUsuario').value;
+            const password = document.getElementById('novaSenha').value;
+
+            const novoUsuario = { username, password };
+
+            const usuarios = await carregarUsuarios();
+
+            const usuarioExistente = usuarios.find(user => user.username === username);
+            if (usuarioExistente) {
+                document.getElementById('cadastroResultado').textContent = 'Usuário já existe!';
+                return false;
+            }
+
+            usuarios.push(novoUsuario);
+
+            const atualizado = await fetch('usuarios.json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuarios)
+            });
+
+            if (atualizado.ok) {
+                document.getElementById('cadastroResultado').textContent = 'Usuário cadastrado com sucesso!';
+            } else {
+                document.getElementById('cadastroResultado').textContent = 'Erro ao cadastrar o usuário.';
+            }
+
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuarioLogado = localStorage.getItem('usuarioLogado');
+            if (usuarioLogado !== 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
