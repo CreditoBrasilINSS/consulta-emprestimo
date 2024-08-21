@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Empréstimo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Empréstimo</h1>
+
+        <button onclick="logout()">Logout</button>
+
+        <section id="consultaSection">
+            <h2>Consulta</h2>
+            <div class="input-group">
+                <input type="text" id="cpfConsulta" placeholder="Digite o CPF">
+                <button onclick="consultar()">Consultar</button>
+            </div>
+            <div id="resultadoConsulta">
+                <!-- Resultado da consulta será exibido aqui -->
+            </div>
+        </section>
+    </div>
+    <script>
+        async function carregarDados() {
+            const response = await fetch('dados.json');
+            const dados = await response.json();
+            return dados;
+        }
+
+        async function consultar() {
+            const cpf = document.getElementById('cpfConsulta').value;
+            const dados = await carregarDados();
+
+            const cliente = dados.find(item => item.cpf === cpf);
+            if (cliente) {
+                const hoje = new Date();
+                const dataValor = new Date(cliente.dataValorDisponivel);
+                const tempoRestante = Math.ceil((dataValor - hoje) / (1000 * 60 * 60 * 24));
+
+                document.getElementById('resultadoConsulta').innerHTML = `
+                    <p>Nome: ${cliente.nome}</p>
+                    <p>Data de Solicitação: ${cliente.dataSolicitacao}</p>
+                    <p>Tempo Restante para Recebimento: ${tempoRestante} dias</p>
+                `;
+            } else {
+                document.getElementById('resultadoConsulta').innerHTML = `<p>CPF não encontrado.</p>`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuarioLogado = localStorage.getItem('usuarioLogado');
+            if (usuarioLogado !== 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
