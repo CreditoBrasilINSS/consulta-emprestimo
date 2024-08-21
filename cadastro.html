@@ -10,35 +10,37 @@
     <div class="container">
         <h1>Painel de Controle</h1>
 
-        <button onclick="logout()">Logout</button>
+        <button id="logout" onclick="logout()">Logout</button>
 
         <!-- Seção de Pesquisa de Usuários (Somente Admin) -->
         <section id="pesquisaSection">
             <h2>Pesquisar Usuário</h2>
             <div class="input-group">
+                <label for="pesquisaUsuario">Digite o nome ou usuário</label>
                 <input type="text" id="pesquisaUsuario" placeholder="Digite o nome ou usuário">
-                <button onclick="pesquisarUsuario()">Pesquisar</button>
             </div>
-            <div id="resultadoPesquisa">
+            <button onclick="pesquisarUsuario()">Pesquisar</button>
+            <div id="resultadoPesquisa" style="margin-top: 20px;">
                 <!-- Resultado da pesquisa será exibido aqui -->
             </div>
         </section>
 
         <!-- Seção de Cadastro de Novo Usuário (Somente Admin) -->
-        <section id="cadastroSection">
+        <section id="cadastroSection" style="margin-top: 20px;">
             <h2>Adicionar Novo Usuário</h2>
             <form id="cadastroUsuarioForm" onsubmit="return adicionarUsuario()">
                 <div class="input-group">
+                    <label for="novoUsuario">Nome de Usuário</label>
                     <input type="text" id="novoUsuario" placeholder="Nome de Usuário" required>
                 </div>
                 <div class="input-group">
+                    <label for="novaSenha">Senha</label>
                     <input type="password" id="novaSenha" placeholder="Senha" required>
                 </div>
                 <button type="submit">Cadastrar</button>
                 <div id="cadastroResultado" style="margin-top: 20px;"></div>
             </form>
         </section>
-
     </div>
     <script>
         async function carregarUsuarios() {
