@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm" onsubmit="return validarLogin()">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Usuário" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Senha" required>
+            </div>
+            <button type="submit">Entrar</button>
+            <div id="loginError" style="color: red; margin-top: 10px;"></div>
+        </form>
+    </div>
+    <script>
+        async function carregarUsuarios() {
+            const response = await fetch('usuarios.json');
+            const usuarios = await response.json();
+            return usuarios;
+        }
+
+        async function validarLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const usuarios = await carregarUsuarios();
+
+            const usuarioEncontrado = usuarios.find(user => user.username === username && user.password === password);
+
+            if (usuarioEncontrado) {
+                // Armazena no localStorage que o usuário está autenticado
+                localStorage.setItem('usuarioLogado', 'true');
+
+                if (usuarioEncontrado.username === 'admin') {
+                    window.location.href = 'cadastro.html';
+                } else {
+                    window.location.href = 'consulta.html';
+                }
+                return false;
+            } else {
+                document.getElementById('loginError').textContent = 'Usuário ou senha incorretos';
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
