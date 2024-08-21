@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -9,65 +13,78 @@ body {
 }
 
 .container {
-    background-color: #ffffff;
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
 }
 
-h1, h2 {
+.logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+h1 {
     font-size: 24px;
     margin-bottom: 20px;
-    color: #333333;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .input-group {
     margin-bottom: 15px;
-    text-align: left;
 }
 
-.input-group input {
-    width: calc(100% - 20px);
+input[type="text"],
+input[type="password"] {
+    width: 100%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #cccccc;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
 }
 
-button {
-    background-color: #009933;
-    color: #ffffff;
-    border: none;
+.btn {
     padding: 10px 20px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 10px;
+    color: white;
 }
 
-button:hover {
-    background-color: #007a29;
+.btn-green {
+    background-color: #009933;
+    margin-right: 10px;
 }
 
-#logout {
+.btn-red {
     background-color: #ff4d4d;
-    margin-left: 10px;
 }
 
-#logout:hover {
-    background-color: #e60000;
+.logout-btn {
+    display: block;
+    margin: 10px auto 20px;
 }
 
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
+@media (max-width: 480px) {
+    .input-group {
+        display: flex;
+        flex-direction: column;
+    }
 
-#pesquisaSection .input-group, #cadastroSection .input-group {
-    margin-bottom: 10px;
+    .btn-green,
+    .btn-red {
+        margin: 5px 0;
+    }
+
+    .btn-red {
+        margin-top: 10px;
+    }
 }
