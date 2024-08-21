@@ -8,16 +8,13 @@
 </head>
 <body>
     <div class="container">
+        <img src="https://www.gov.br/inss/pt-br/media/logo-inss-30.svg/@@download/file" alt="INSS" class="logo">
         <h1>Consulta de Empréstimo</h1>
-
-        <div class="button-group">
-            <div class="input-group">
-                <input type="text" id="cpfConsulta" placeholder="Digite o CPF">
-                <button onclick="consultar()">Consultar</button>
-            </div>
-            <button id="logout" onclick="logout()">Logout</button>
+        <div class="input-group">
+            <input type="text" id="cpfConsulta" placeholder="Digite o CPF">
+            <button class="btn btn-green" onclick="consultar()">Consultar</button>
+            <button class="btn btn-red" onclick="logout()">Logout</button>
         </div>
-
         <div id="resultadoConsulta">
             <!-- Resultado da consulta será exibido aqui -->
         </div>
@@ -50,16 +47,8 @@
         }
 
         function logout() {
-            localStorage.removeItem('usuarioLogado');
             window.location.href = 'index.html';
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const usuarioLogado = localStorage.getItem('usuarioLogado');
-            if (!usuarioLogado) {
-                window.location.href = 'index.html';
-            }
-        });
     </script>
 </body>
 </html>
