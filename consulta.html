@@ -8,58 +8,21 @@
 </head>
 <body>
     <div class="container">
+        <img src="https://www.gov.br/inss/pt-br/media/logo-inss-30.svg/@@download/file" alt="INSS" class="logo">
         <h1>Consulta de Empréstimo</h1>
-
-        <div class="button-group">
-            <div class="input-group">
-                <input type="text" id="cpfConsulta" placeholder="Digite o CPF">
-                <button onclick="consultar()">Consultar</button>
-            </div>
-            <button id="logout" onclick="logout()">Logout</button>
+        <div class="input-group">
+            <input type="text" id="cpfConsulta" placeholder="Digite o CPF">
+            <button class="btn btn-green" onclick="consultar()">Consultar</button>
+            <button class="btn btn-red" onclick="logout()">Logout</button>
         </div>
-
         <div id="resultadoConsulta">
             <!-- Resultado da consulta será exibido aqui -->
         </div>
     </div>
     <script>
-        async function carregarDados() {
-            const response = await fetch('dados.json');
-            const dados = await response.json();
-            return dados;
-        }
-
-        async function consultar() {
-            const cpf = document.getElementById('cpfConsulta').value;
-            const dados = await carregarDados();
-
-            const cliente = dados.find(item => item.cpf === cpf);
-            if (cliente) {
-                const hoje = new Date();
-                const dataValor = new Date(cliente.dataValorDisponivel);
-                const tempoRestante = Math.ceil((dataValor - hoje) / (1000 * 60 * 60 * 24));
-
-                document.getElementById('resultadoConsulta').innerHTML = `
-                    <p>Nome: ${cliente.nome}</p>
-                    <p>Data de Solicitação: ${cliente.dataSolicitacao}</p>
-                    <p>Tempo Restante para Recebimento: ${tempoRestante} dias</p>
-                `;
-            } else {
-                document.getElementById('resultadoConsulta').innerHTML = `<p>CPF não encontrado.</p>`;
-            }
-        }
-
         function logout() {
-            localStorage.removeItem('usuarioLogado');
             window.location.href = 'index.html';
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const usuarioLogado = localStorage.getItem('usuarioLogado');
-            if (!usuarioLogado) {
-                window.location.href = 'index.html';
-            }
-        });
     </script>
 </body>
 </html>
