@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+        <img src="https://www.gov.br/inss/pt-br/media/logo-inss-30.svg/@@download/file" alt="INSS" class="logo">
         <h1>Login</h1>
         <form id="loginForm" onsubmit="return validarLogin()">
             <div class="input-group">
@@ -16,39 +17,30 @@
             <div class="input-group">
                 <input type="password" id="password" placeholder="Senha" required>
             </div>
-            <button type="submit">Entrar</button>
+            <button type="submit" class="btn btn-green">Entrar</button>
             <div id="loginError" style="color: red; margin-top: 10px;"></div>
         </form>
     </div>
     <script>
-        async function carregarUsuarios() {
-            const response = await fetch('usuarios.json');
-            const usuarios = await response.json();
-            return usuarios;
-        }
-
         async function validarLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            const usuarios = await carregarUsuarios();
+            const response = await fetch('usuarios.json');
+            const usuarios = await response.json();
 
-            const usuarioEncontrado = usuarios.find(user => user.username === username && user.password === password);
+            const user = usuarios.find(u => u.username === username && u.password === password);
 
-            if (usuarioEncontrado) {
-                // Armazena no localStorage que o usuário está autenticado
-                localStorage.setItem('usuarioLogado', 'true');
-
-                if (usuarioEncontrado.username === 'admin') {
+            if (user) {
+                if (user.username === 'admin') {
                     window.location.href = 'cadastro.html';
                 } else {
                     window.location.href = 'consulta.html';
                 }
-                return false;
             } else {
                 document.getElementById('loginError').textContent = 'Usuário ou senha incorretos';
-                return false;
             }
+            return false;
         }
     </script>
 </body>
