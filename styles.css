@@ -17,7 +17,7 @@ body {
     text-align: center;
 }
 
-h1 {
+h1, h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333333;
@@ -54,16 +54,18 @@ button:hover {
 
 #logout {
     background-color: #ff4d4d;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-left: 10px;
 }
 
 #logout:hover {
     background-color: #e60000;
 }
 
-#cadastroSection button, #pesquisaSection button {
-    width: 100%;
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
 }
 
 #pesquisaSection .input-group, #cadastroSection .input-group {
